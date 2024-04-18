@@ -1,0 +1,52 @@
+# base experiment
+exper:
+  mode: 'eval'
+  debug: False
+  fast_annot_path: /home/user/disk_16T/dataset/EvRealHands_rgb
+
+preprocess:
+  batch_size: 1
+  num_workers: 8
+  update_period: 50 # regenerate the items for each N epochs
+  test_fps: 15 # fps for testing
+  acquire_aps: True # acquire aps from event data
+  test_fps_fast: 120
+  same_time_window_fast: 5000.
+  # same time window settings
+  same_time_window: 66666.
+  window_size_var: 0.5
+  max_window_time: 100000.
+  min_window_time: 10000.
+  window_time_var: 50000.
+  bbox:
+    usage: True
+
+
+method:
+  kalman_filter:
+    usage: True
+    var: 30.
+    R_coef: 0.03
+    seq_len: 40
+    min_std: 0.008
+    sigma: 4.
+
+loss:
+  basic:
+    blur_radius: 0
+  supervision:
+    weight: 2.0
+
+log:
+  save_result: False
+  save_fast: False
+  verbose: False
+  imshow: False
+  show_mesh: False
+  render_background: True
+  gt_show: False
+  aligned_mesh: True
+  save_eci: False
+  save_images: True
+  save_flow: False
+  save_crop: False

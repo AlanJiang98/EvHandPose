@@ -1,0 +1,36 @@
+exper:
+  exper_name: 'train_semi'
+  gpus: 0
+  debug: False
+  epochs: 80
+  mode: 'train'
+  supervision: ['supervision', 'semi-supervision']
+  #  supervision: ['supervision', 'semi-supervision', 'unsupervision']
+
+preprocess:
+  batch_size: 32
+  num_workers: 8
+  update_period: 1
+
+method:
+  optimizers:
+    infer_encoder:
+      name: Adam
+      lr: 0.00005
+      weight_decay: 0.0001
+
+loss:
+  mano:
+    weight: 0.1
+  smooth:
+    weight: 0.2
+  cm:
+    weight: -3.
+  edge:
+    weight: 0.05
+  flow:
+    weight: 0.
+  supervision:
+    weight: 1.0
+  joint_3d:
+    weight: 1000.

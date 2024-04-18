@@ -1,0 +1,171 @@
+# bbox scale test
+exper:
+  output_dir: '/home/user/disk_16T/code/Event3DHandPoseEstimation_opensource/exper/EvHandOpenSource'
+  exper_name: 'train_flow'
+  debug: False
+  gpus: 0
+  epochs: 20
+  mode: 'train'
+  early_stop: False
+  patience: 10  # early stop patience
+  strategy: 'ddp' # 'dp' data parallel strategy
+  supervision: ['supervision'] # supervision type: ['supervision', 'semi-supervision', 'unsupervision']
+
+data:
+  smplx_path: '/home/user/disk_16T/code/smplx_models/mano' # directory to mano model data
+  dataset: EvHand # Interhand, EvHand
+  data_dir: '/home/user/disk_16T/dataset/EvRealHands_event' # directory to dataset
+  train_subject: [0, 2, 4, 5, 6, 7, 8, 9]  # subject ids for training
+  val_subject: []  # subject ids for validation
+  eval_subject: [1, 3]  # subject ids for testing
+  fps: 15 # data fps
+  width: 346
+  height: 260
+  hand_type: 'right' # hand type 'left' 'right'
+  gesture_type: 'all'
+  flip: True
+  mano_key: 'manos'
+
+preprocess:
+  batch_size: 16
+  num_workers: 8
+  update_period: 50 # regenerate the items for each N epochs
+  test_fps: 15 # fps for testing
+  acquire_aps: False # acquire aps from event data
+
+  num_events: 10000  # maximum number of events for each window
+  repre: 'LNES' # representation for edge info
+  interpolate: True # accumulated method for representation
+
+  time_window_method: 'same_time' #'same_hand_motion' #'same_time'
+  # same hand motion settings
+  hand_motion_per_window: 0.01
+  default_hand_speed: 0.0000001
+  speed_update_pre: 2
+  # same time window settings
+  same_time_window: 66666.
+  window_size_var: 0.5
+  max_window_time: 100000.
+  min_window_time: 10000.
+  window_time_var: 50000.
+  # annotation usage rate for semi-supervised learning
+  annot_use_rate: 1.0
+  window_stride: 1
+  # add background filter
+  activity_filter: False
+  activity_filter_delta_t: 8000
+  activity_filter_N_thre: 4
+  # augmentation of scale, trans, rotation, noise
+  augment:
+    depth_range: [0.7, 1.3]
+    scale_var: 0.1
+    rotate_var: 0.3
+    trans_range_x: [-0.3, 0.3]
+    trans_range_y: [-0.3, 0.3]
+    trans_var: 0.1
+    # noise
+    gaussian_mean: 0.
+    gaussian_sigma: 0.05
+    salt_pepper: 0.001
+  # bounding box method
+  bbox:
+    usage: True
+    joints_to_bbox_rate: 2.
+    size: 128 # bbox size
+    shift_var: 0.15 # trans shift
+    resize: True # rescale or not
+
+
+method:
+  name: 'EvHands'
+  block: 'BasicBlock' # 'Bottleneck' 'resnet18'
+  model_path:
+  supervision_type: 'all_loss'
+  loop_supervision: 1 #5
+  flow:
+    train: True
+    fixed: False
+    usage: True
+    num_bins: 5
+    base_num_channels: 32
+    kernel_size: 3
+    num_encoders: 4
+    num_residual_blocks: 2
+  event_encoder:
+    usage: True
+    num_bins: 1
+    base_num_channels: 64
+    channel_sizes: [ ]
+    residual_norm: 'BN'
+  encoder_fusion:
+    channel_sizes: [3, 4, 6, 3]
+    residual_norm: 'BN'
+  seq_model:
+    model: 'ConvGRU' #'ConvLSTM'#
+    seq_len: 12
+    annot_len: 3
+    num_layers: 1
+
+  predictor:
+    mean: [0.15, 0.0, 0.5]
+    scale: [0.3, 0.3, 0.3]
+    layer_dims: [128, 61]
+
+  optimizers:
+    flow_encoder:
+      name: Adam
+      lr: 0.0005
+      weight_decay: 0.0001
+    infer_encoder:
+      name: Adam
+      lr: 0.0005
+      weight_decay: 0.0001
+
+loss:
+  mano:
+    trans_weight: 2000.
+    shape_weight: 0.25
+    hand_pose_weight: 5.
+    rot_weight: 10.
+    weight: 0.0
+  basic:
+    blur_radius: 0.00003
+  smooth:
+    margin: 0.5 # TODO 0.01 for interhand 0.5 for evhand
+    trans_weight: 1000.
+    shape_weight: 0.2
+    hand_pose_weight: 1.
+    rot_weight: 0.1
+    soften: True
+    soften_rate: 1.0
+    weight: 0.1
+  cm:
+    N_inter: 4
+    weight: -3.
+  edge:
+    factor: 0.3
+    motion: True
+    motion_bias: 4
+    orient: True
+    orient_bias: 0.2
+    iwe_percentage: 0.001
+    search_window: 12
+    dist_bias: 4
+    weight: 0.2
+  flow:
+    weight: 10.
+  supervision:
+    weight: 0.0
+  joint_3d:
+    weight: 0.0
+
+log:
+  save_crop: False
+  inter_debug: False
+  verbose: False
+  imshow: False
+  show_mesh: False
+  render_background: True
+  gt_show: False
+  aligned_mesh: False
+
