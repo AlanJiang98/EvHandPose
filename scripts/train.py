@@ -27,11 +27,11 @@ def collect_val_datasets(dataset):
 if __name__ == '__main__':
     warnings.filterwarnings("ignore")
     parser = argparse.ArgumentParser('Train Script')
-    parser.add_argument('--config', type=str, default='../configs/open_source/train_supervision.yml')
+    parser.add_argument('--config', type=str, default='')
     parser.add_argument('--gpus', type=str, default='1')
-    parser.add_argument('--model_path', type=str, default='../exper/EvHandOpenSource/train_semi/EvHands_epoch=13_val_mpjpe=0.0287.ckpt')
+    parser.add_argument('--model_path', type=str, default='')
     parser.add_argument('--flow_model_path', type=str, default='')
-    parser.add_argument('--config_merge', type=str, default='../configs/open_source/train_semi.yml')
+    parser.add_argument('--config_merge', type=str, default='')
     args = parser.parse_args()
     config = YAMLParser(args.config)
 

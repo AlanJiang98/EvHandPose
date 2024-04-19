@@ -62,7 +62,6 @@ if __name__ == '__main__':
     parser.add_argument('--gpu', type=str, default='1')
     parser.add_argument('--model_path', type=str, default='../exper/EvHandOpenSource/train_semi/EvHands_epoch=46_val_mpjpe=0.0399.ckpt')
     parser.add_argument('--test_name', type=str, default='test')
-    parser.add_argument('--save_mesh', action='store_true')
     args = parser.parse_args()
 
     config = YAMLParser(args.config_train)
@@ -322,6 +321,8 @@ if __name__ == '__main__':
                 mpjpe_2d_each_joint_scale = compute_2d_error(pred_joints_2d, gt_joints_2d, is_abs=False, is_align=True)
                 mpjpe_2d_each_joint_scale = mpjpe_2d_each_joint_scale[valid_mpjpe]
                 mpjpe_2d = torch.mean(mpjpe_2d_each_joint)
+                if torch.isnan(mpjpe_2d):
+                    continue
                 mpjpe_2d_scale = torch.mean(mpjpe_2d_each_joint_scale)
                 mpjpe2d_seq_error_list.append(mpjpe_2d.item())
                 mpjpe2d_seq_error_list_scale.append(mpjpe_2d_scale.item())

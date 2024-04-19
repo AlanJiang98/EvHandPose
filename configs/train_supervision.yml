@@ -2,7 +2,7 @@
 exper:
   output_dir: '/home/user/disk_16T/code/Event3DHandPoseEstimation_opensource/exper/EvHandOpenSource'
   exper_name: 'train_supervision'
-  debug: True
+  debug: False
   gpus: 1
   epochs: 40
   mode: 'train'

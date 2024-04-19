@@ -2,7 +2,7 @@ exper:
   exper_name: 'train_semi'
   gpus: 0
   debug: False
-  epochs: 80
+  epochs: 40
   mode: 'train'
   supervision: ['supervision', 'semi-supervision']
   #  supervision: ['supervision', 'semi-supervision', 'unsupervision']
