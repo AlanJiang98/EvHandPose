@@ -1,4 +1,4 @@
-name: EvHand
+name: EvHand_public
 channels:
   - pytorch3d
   - pytorch

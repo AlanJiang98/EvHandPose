@@ -5,7 +5,7 @@ Clone this repository and install dependencies.
 1. create an environment
 ```
 conda env create -f environment.yml
-conda activate EvHand
+conda activate EvHand_public
 ```
 
 # 2.Dataset Preparation
