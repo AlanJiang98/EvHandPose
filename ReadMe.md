@@ -10,7 +10,7 @@ conda activate EvHand
 
 # 2.Dataset Preparation
 Our real-world dataset is from [EvRealHands](https://github.com/marian42/mesh_to_sdf).  
-Please download our dataset to your disk. We use \$data\$ to represent the absolute path to our dataset.
+Please download our dataset to your disk. We use /$data/$ to represent the absolute path to our dataset.
 
 # 3. Training
 Our training process consists of three steps. First, we train FlowNet under supervision with the flow loss,
