@@ -2,6 +2,7 @@ import os
 from abc import abstractmethod
 import copy
 import numpy as np
+import cv2
 import torch
 from natsort import natsorted
 from tqdm import tqdm

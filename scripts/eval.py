@@ -78,8 +78,8 @@ if __name__ == '__main__':
             #     continue
             print(config_['data']['seq_dir'])
             datasets.append(eval(config['data']['dataset']+'Dataset')(config_))
-            # if len(datasets) > 3:
-            #     break
+            if len(datasets) > 3:
+                break
     else:
         pool = mp.Pool(8)
         for config_ in configs:

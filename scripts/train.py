@@ -101,7 +101,7 @@ if __name__ == '__main__':
                               pin_memory=False)
     val_loader = DataLoader(val_data, batch_size=config['preprocess']['batch_size'], num_workers=config['preprocess']['num_workers'], #persistent_workers=True,
                              pin_memory=False)
-    device = 'cuda:0'
+    device = f'cuda:{args.gpus}'
     if config['method']['model_path'] is not None:
         model = eval(config['method']['name']).load_from_checkpoint(checkpoint_path=config['method']['model_path'],
                                                                     config=copy.deepcopy(config),map_location=device)
@@ -147,7 +147,7 @@ if __name__ == '__main__':
             patience=config['exper']['patience'], )
         callbacks.append(earlystop_callback)
     trainer = pl.Trainer(
-        devices=config['exper']['gpus'],
+        devices=[int(args.gpus)],
         max_epochs=config['exper']['epochs'],
         check_val_every_n_epoch=1,
         strategy=config['exper']['strategy'],
