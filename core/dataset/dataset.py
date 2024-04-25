@@ -11,7 +11,6 @@ from core.dataset.noise_filter import background_activity_filter
 from tools.basic_io.aedat_preprocess import extract_data_from_aedat4
 from core.dataset.joint_indices import indices_change
 from core.dataset.event_preprocess import undistortion_points, event_to_voxel, event_to_LNES, event_to_channels, create_polarity_mask, remove_unfeasible_events
-from tools.visualization.vis_flow import *
 import roma
 from scipy.interpolate import interp1d
 

@@ -3,8 +3,6 @@ import torch.nn as nn
 import numpy as np
 from core.model.utils.unet import MultiResUNet
 from core.model.utils.basic_models import BasicBlock, Bottleneck, conv1x1, RecurrentLayer
-from core.model.utils.spike_tensor_encoder import QuantizationLayer
-from core.model.utils.lstm.net_matrixlstm import MatrixLSTMResNet
 from fvcore.nn import FlopCountAnalysis
 import time
 

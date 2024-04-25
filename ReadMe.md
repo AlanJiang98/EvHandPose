@@ -29,7 +29,7 @@ First, set the values in ```configs/train_flow.yml``` as follows:
 Second, run the following script:
 ```
 cd ./scripts
-python train.py --configs ../configs/train_flow.yml --gpus 1
+python train.py --config ../configs/train_flow.yml --gpus 1
 ```
 
 We train 20 epochs in our experiments.
@@ -43,7 +43,7 @@ First, set the values in ```configs/train_supervision.yml``` as follows:
 Second, run the following script:
 ```
 cd ./scripts
-python train.py --configs ../configs/train_supervision.yml --gpus 1 --flow_model_path $output_flow_model_path$/last.ckpt
+python train.py --config ../configs/train_supervision.yml --gpus 1 --flow_model_path $output_flow_model_path$/last.ckpt
 ```
 
 We train 40 epochs in our experiments.
@@ -57,7 +57,7 @@ First, set the values in ```configs/train_semi.yml``` as follows:
 Second, run the following script:
 ```
 cd ./scripts
-python train.py --configs ../configs/train_supervision.yml --gpus 1 
+python train.py --config ../configs/train_supervision.yml --gpus 1 
 --model_path $output_fully_supervision_model_path$/last.ckpt --config_merge ../configs/train_semi.yml
 ```
 
