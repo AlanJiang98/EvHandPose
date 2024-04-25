@@ -287,7 +287,7 @@ if __name__ == '__main__':
                         fast_id += 1
 
             gt_joints = annot['joint'][:, -1, :, :]
-            #去掉没有GT标注的帧
+            #remove frames without ground truth labels
             ids = x['ids'][:,-1]
             valid_index = torch.where(ids!=-1)[0]
             if len(valid_index) == 0:
