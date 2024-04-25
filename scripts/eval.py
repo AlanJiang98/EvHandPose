@@ -1,11 +1,11 @@
 import os
 import sys
 from os.path import dirname
-
+abs_path = os.path.abspath(dirname(dirname(__file__)))
+sys.path.insert(0,abs_path)
 import numpy as np
 import torch
 import cv2
-sys.path.append(dirname(os.getcwd()))
 import argparse
 import copy
 import roma

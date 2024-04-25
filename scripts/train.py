@@ -1,7 +1,8 @@
 import os
 import sys
 from os.path import dirname
-sys.path.append(dirname(os.getcwd()))
+abs_path = os.path.abspath(dirname(dirname(__file__)))
+sys.path.insert(0,abs_path)
 import argparse
 import copy
 from configs.parser import YAMLParser
