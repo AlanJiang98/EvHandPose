@@ -109,14 +109,14 @@ if __name__ == '__main__':
     else:
         mano_layer = MANO(smplx_path, use_pca=True, is_rhand=True, num_pca_comps=6).to(device)
     faces = mano_layer.faces_tensor
-    error_dict = {'normal_fixed':{'mpjpe':[], 'pa-mpjpe':[], '2d-mpjpe':[], '2d-mpjpe_scale':[]},
-                  'normal_random':{'mpjpe':[], 'pa-mpjpe':[], '2d-mpjpe':[], '2d-mpjpe_scale':[]},
-                  'highlight_fixed':{'mpjpe':[], 'pa-mpjpe':[], '2d-mpjpe':[], '2d-mpjpe_scale':[]},
-                  'highlight_random':{'mpjpe':[], 'pa-mpjpe':[], '2d-mpjpe':[], '2d-mpjpe_scale':[]},
-                  'flash_fixed':{'mpjpe':[], 'pa-mpjpe':[], '2d-mpjpe':[], '2d-mpjpe_scale':[]},
-                  'flash_random':{'mpjpe':[], 'pa-mpjpe':[], '2d-mpjpe':[], '2d-mpjpe_scale':[]},
+    error_dict = {'normal_fixed':{'mpjpe':[], 'pa-mpjpe':[]},
+                  'normal_random':{'mpjpe':[], 'pa-mpjpe':[]},
+                  'highlight_fixed':{'mpjpe':[], 'pa-mpjpe':[]},
+                  'highlight_random':{'mpjpe':[], 'pa-mpjpe':[]},
+                  'flash_fixed':{'mpjpe':[], 'pa-mpjpe':[]},
+                  'flash_random':{'mpjpe':[], 'pa-mpjpe':[]},
                   'fast':{'2d-mpjpe':[], '2d-mpjpe_scale':[]},
-                  'all_mpjpe':{'mpjpe':[], 'pa-mpjpe':[], '2d-mpjpe':[], '2d-mpjpe_scale':[]}
+                  'all_mpjpe':{'mpjpe':[], 'pa-mpjpe':[]}
                   }
     for j, test_loader in enumerate(test_loaders):
         print(50*'*')
@@ -129,7 +129,7 @@ if __name__ == '__main__':
         K = torch.tensor(camera_annot['event']['K'], dtype=torch.float32, device=device)
         mpjpe_seq_error_list = []
         pampjpe_seq_error_list = []
-        mpjpe_list = []  # 计算auc曲线存的
+        mpjpe_list = []
         if datasets[j].motion_type == 'fast':
             seq_id = os.path.basename(datasets[j].config['data']['seq_dir'])
             fast_annot_path = os.path.join(config['exper']['fast_annot_path'], seq_id, "annotf.json")
@@ -141,8 +141,8 @@ if __name__ == '__main__':
             fx = K[0,0]
         mpjpe2d_seq_error_list = []
         mpjpe2d_seq_error_list_scale = []
-        fast_id = 0  # 用于存fast序列的id
-        last_mano = None # 用于算fast序列的iwe
+        fast_id = 0
+        last_mano = None
         render = get_renderer(config)
         for x in tqdm(test_loader):
             x = to_device(x, device)
@@ -309,29 +309,6 @@ if __name__ == '__main__':
                 pampjpe_batch = torch.mean(pampjpe_error,dim=-1)
                 pampjpe_seq_error_list.extend(pampjpe_batch.detach().cpu().numpy().tolist())
 
-                pred_joints_2d = torch.einsum('ijk,kl->ijl', pred_joints, K.T)
-                pred_joints_2d = pred_joints_2d[..., :2] / pred_joints_2d[..., 2:]
-                gt_joints_2d = torch.einsum('ijk,kl->ijl', gt_joints, K.T)
-                gt_joints_2d = gt_joints_2d[..., :2] / gt_joints_2d[..., 2:]
-                mpjpe_2d_each_joint = compute_2d_error(pred_joints_2d, gt_joints_2d, is_abs=True, is_align=True)
-                mpjpe_2d_each_hand = torch.mean(mpjpe_2d_each_joint, dim=-1)
-                #去掉异常值
-                valid_mpjpe = torch.where(mpjpe_2d_each_hand<100)[0]
-                mpjpe_2d_each_joint = mpjpe_2d_each_joint[valid_mpjpe]
-                mpjpe_2d_each_joint_scale = compute_2d_error(pred_joints_2d, gt_joints_2d, is_abs=False, is_align=True)
-                mpjpe_2d_each_joint_scale = mpjpe_2d_each_joint_scale[valid_mpjpe]
-                mpjpe_2d = torch.mean(mpjpe_2d_each_joint)
-                if torch.isnan(mpjpe_2d):
-                    continue
-                mpjpe_2d_scale = torch.mean(mpjpe_2d_each_joint_scale)
-                mpjpe2d_seq_error_list.append(mpjpe_2d.item())
-                mpjpe2d_seq_error_list_scale.append(mpjpe_2d_scale.item())
-
-                # for batch_id, frame_id in enumerate(x['ids'][valid_index,-1].detach().cpu().numpy().tolist()):
-                #     img = visualize_2d_error(pred_joints_2d[batch_id].detach().cpu().numpy(), gt_joints_2d[batch_id].detach().cpu().numpy())
-                #     os.makedirs(os.path.join(root_dir, 'fast'), exist_ok=True)
-                #     cv2.imwrite(os.path.join(root_dir, 'fast', 'img{}.jpg'.format(frame_id)), img)
-
             else:
                 #2d-mpjpe
                 frame_ids = x['ids'][valid_index,-1].detach().cpu().numpy().tolist()
@@ -351,7 +328,7 @@ if __name__ == '__main__':
                     else:
                         root_3d_gt = joints_3d_gt[0].clone()
                     joints_3d_pred = pred_joints[batch_id][indices_change(1,2)]
-                    joints_3d_pred_align = joints_3d_pred# - joints_3d_pred[0:1] + root_3d_gt
+                    joints_3d_pred_align = joints_3d_pred
                     joints_2d_pred = joints_3d_pred_align @ K.T
                     joints_2d_pred = joints_2d_pred[:,:2] / joints_2d_pred[:,2:]
                     mpjpe_2d_each_joint = compute_2d_error(joints_2d_pred.unsqueeze(0), joints_2d_gt.unsqueeze(0), is_abs=True, is_align=True)
@@ -373,16 +350,10 @@ if __name__ == '__main__':
             ##
             error_dict[scene+'_'+gesture]['mpjpe'].extend(mpjpe_seq_error_list)
             error_dict[scene + '_' + gesture]['pa-mpjpe'].extend(pampjpe_seq_error_list)
-            error_dict[scene + '_' + gesture]['2d-mpjpe'].extend(mpjpe2d_seq_error_list)
-            error_dict[scene + '_' + gesture]['2d-mpjpe_scale'].extend(mpjpe2d_seq_error_list_scale)
             error_dict['all_mpjpe']['mpjpe'].extend(mpjpe_seq_error_list)
             error_dict['all_mpjpe']['pa-mpjpe'].extend(pampjpe_seq_error_list)
-            error_dict['all_mpjpe']['2d-mpjpe'].extend(mpjpe2d_seq_error_list)
-            error_dict['all_mpjpe']['2d-mpjpe_scale'].extend(mpjpe2d_seq_error_list_scale)
-            print('Sequence MPJPE: {}mm / PA-MPJPE: {}mm / 2D-MPJPE: {}px / 2D-MPJPE_scaled: {}px'.format(
-                np.mean(mpjpe_seq_error_list)*1000., np.mean(pampjpe_seq_error_list)*1000.,
-                np.mean(mpjpe2d_seq_error_list), np.mean(mpjpe2d_seq_error_list_scale)
-            ))
+            print('Sequence MPJPE: {}mm / PA-MPJPE: {}mm'.format(
+                np.mean(mpjpe_seq_error_list)*1000., np.mean(pampjpe_seq_error_list)*1000.))
         else:
             error_dict['fast']['2d-mpjpe'].extend(mpjpe2d_seq_error_list)
             error_dict['fast']['2d-mpjpe_scale'].extend(mpjpe2d_seq_error_list_scale)
@@ -390,10 +361,9 @@ if __name__ == '__main__':
     print(50*'*')
     for k,v in error_dict.items():
         if k != 'fast':
-            print('{} MPJPE: {}mm / PA-MPJPE: {}mm / 2D-MPJPE: {}px / 2D-MPJPE_scaled: {}px'.format(
-                k, np.mean(v['mpjpe'])*1000., np.mean(v['pa-mpjpe'])*1000.,
-                np.mean(v['2d-mpjpe']), np.mean(v['2d-mpjpe_scale'])
-            ))
+            print('{} MPJPE: {}mm / PA-MPJPE: {}mm'.format(
+                k, np.mean(v['mpjpe'])*1000., np.mean(v['pa-mpjpe'])*1000.,)
+            )
         else:
             print('{} 2D-MPJPE: {}px / 2D-MPJPE_scaled: {}px'.format(k, np.mean(v['2d-mpjpe']), np.mean(v['2d-mpjpe_scale'])))
 
