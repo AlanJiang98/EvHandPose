@@ -8,9 +8,14 @@ conda env create -f environment.yml
 conda activate EvHand_public
 ```
 
-# 2.Dataset Preparation
-Our real-world dataset is from [EvRealHands](https://github.com/marian42/mesh_to_sdf).  
+# 2. Dataset Preparation
+## 1. EvRealHands Dataset
+Our real-world dataset is from [EvRealHands](https://github.com/marian42/mesh_to_sdf).
 Please download our dataset to your disk. We use ```$data$``` to represent the absolute path to our dataset.
+
+## 2. MANO
+Please download MANO models from [MANO](https://mano.is.tue.mpg.de/download.php).
+Put the ```MANO_LEFT.pkl``` and ```MANO_RIGHT.pkl``` to ```data/smplx_model/mano```.
 
 # 3. Training
 Our training process consists of three steps. First, we train FlowNet under supervision with the flow loss,
