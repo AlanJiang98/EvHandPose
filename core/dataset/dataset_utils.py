@@ -12,7 +12,7 @@ def get_dataset_info(config, mode='train'):
     '''
     data_params = []
     if config['data']['dataset'] == 'EvHand':
-        data_caps = os.listdir(os.path.join(config['data']['data_dir'], 'data'))
+        data_caps = [str(i) for i in range(84)]
         id_seq_all = json_read(os.path.join(config['data']['data_dir'], 'id_seq_all.json'))
         id_seq_right = id_seq_all["right"]
         id_seq_left = id_seq_all["left"]
@@ -39,7 +39,7 @@ def get_dataset_info(config, mode='train'):
                 id_caps = [*id_caps, *id_seq[str(subject_id)]]
             for cap in data_caps:
                 if cap in id_caps:
-                    tmp_dir = os.path.join(config['data']['data_dir'], 'data', cap)
+                    tmp_dir = os.path.join(config['data']['data_dir'], cap)
                     data_params.append(tmp_dir)
         else:
             subject_ids = config['data']['train_subject']
@@ -50,41 +50,12 @@ def get_dataset_info(config, mode='train'):
                         continue
                     id_caps_temp = [*id_caps_temp, *id_seq_all[scene][str(subject_id)]]
                 cap = random.choice(id_caps_temp)
-                tmp_dir = os.path.join(config['data']['data_dir'], 'data', cap)
+                tmp_dir = os.path.join(config['data']['data_dir'] , cap)
                 data_params.append(tmp_dir)
                 if scene == "normal_random":
                     cap = random.choice(id_caps_temp)
-                    tmp_dir = os.path.join(config['data']['data_dir'], 'data', cap)
+                    tmp_dir = os.path.join(config['data']['data_dir'], cap)
                     data_params.append(tmp_dir)
-
-    elif config['data']['dataset'] == 'Interhand':
-        if mode == 'train':
-            caps = config['data']['cap_ids_train']
-        elif mode == 'val' or mode == 'eval':
-            caps = config['data']['cap_ids_val']
-        for cap in caps:
-            cap_abs_path = os.path.join(config['data']['data_dir'], 'Capture' + cap)
-            action_names = os.listdir(cap_abs_path)
-            for action_name in action_names:
-                if config['data']['ges_ids'] is not None and action_name not in config['data']['ges_ids']:
-                    continue
-                action_abs_name = os.path.join(cap_abs_path, action_name)
-                cam_names = os.listdir(action_abs_name)
-                for cam_id in config['data']['cam_ids']:
-                    if 'cam' + cam_id in cam_names:
-                        camera_abs_path = os.path.join(action_abs_name, 'cam' + cam_id)
-                        if os.path.exists(os.path.join(camera_abs_path, 'annotations.json')):
-                            data_params.append(camera_abs_path)
-    elif config['data']['dataset'] == 'EventHand':
-        if mode == 'train':
-            seqs = config['data']['train_sequence']
-        elif mode == 'val':
-            seqs = config['data']['val_sequence']
-        for ges in os.listdir(config['data']['data_dir']):
-            ges_path = os.path.join(config['data']['data_dir'], ges)
-            for seq in seqs:
-                seq_abs_path = os.path.join(ges_path, str(seq))
-                data_params.append(seq_abs_path)
 
     else:
         pass
