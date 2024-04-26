@@ -54,12 +54,9 @@ python train.py --config ../configs/train_supervision.yml --gpus 1 --flow_model_
 We train 40 epochs in our experiments.
 
 ## 3. Semi-Supervised Training
-First, set the values in ```configs/train_semi.yml``` as follows:
-1. Set the ```exper.output_dir``` to your output path. We use ```$output_semi_supervision_model_path$``` to represent the output path of our semi supervision model;
-2. Set the ```data.smplx_path``` to your MANO model path;
-3. Set the ```data.data_dir``` to ```$data$```.
+We use ```$output_semi_supervision_model_path$``` to represent the output path of our semi supervision model;
 
-Second, run the following script:
+run the following script:
 ```
 cd ./scripts
 python train.py --config ../configs/train_supervision.yml --gpus 1 
@@ -69,6 +66,10 @@ python train.py --config ../configs/train_supervision.yml --gpus 1
 We train 40 epochs in our experiments.
 
 # 4. Inference
+Set the values in ```configs/eval.yml``` as follows:
+
+1. Set the ```exper.data_dir``` to ```$data$```.
+
 For inference, we provide quantitative results of MPJPE and PA-MPJPE in ```scripts/eval.py```.
 
 You can also get predicted mesh, 3d joints, image with warped events, .etc by setting the  ```log.save_result=True```

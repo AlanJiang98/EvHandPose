@@ -2,7 +2,7 @@
 exper:
   mode: 'eval'
   debug: False
-  fast_annot_path: /home/user/disk_16T/dataset/EvRealHands_rgb
+  data_dir: '/home/user/disk_16T/dataset/EvRealHands_event/data'
 
 preprocess:
   batch_size: 1

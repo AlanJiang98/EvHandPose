@@ -132,7 +132,7 @@ if __name__ == '__main__':
         mpjpe_list = []
         if datasets[j].motion_type == 'fast':
             seq_id = os.path.basename(datasets[j].config['data']['seq_dir'])
-            fast_annot_path = os.path.join(config['exper']['fast_annot_path'], seq_id, "annotf.json")
+            fast_annot_path = os.path.join(config['exper']['data_dir'], seq_id, "annotf.json")
             fast_annot = json_read(fast_annot_path)
             K = torch.tensor(fast_annot['camera_info']['event']['K'], dtype=torch.float32, device=device)
             R = torch.tensor(fast_annot['camera_info']['event']['R'], dtype=torch.float32, device=device)
