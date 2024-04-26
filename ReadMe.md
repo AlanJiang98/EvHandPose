@@ -83,3 +83,6 @@ python eval.py --config_train $output_semi_supervision_model_path$/train.yml --c
 ```
 
 The output results will be saved in ```$output_semi_supervision_model_path$/test```.
+
+We provide [pretrained model](https://www.dropbox.com/scl/fi/bfeac5l6htbnpue473xdk/model.ckpt?rlkey=zfqfjdjyvqvqbrlustv23of0l&e=1&st=zk1d9oc1&dl=0)
+in this link. Download it and set it to ```model_path``` to directly view the results.
