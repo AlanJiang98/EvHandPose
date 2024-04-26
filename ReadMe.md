@@ -28,7 +28,7 @@ We will introduce our training process as follows. Please refer to our [paper](h
 ## 1. FlowNet Training
 First, set the values in ```configs/train_flow.yml``` as follows:
 1. Set the ```exper.output_dir``` to your output flow model path. We use ```$output_flow_model_path$``` to represent the output path of our flow model;
-2. Set the ```data.smplx_path``` to your model path;
+2. Set the ```data.smplx_path``` to your MANO model path;
 3. Set the ```data.data_dir``` to ```$data$```.
 
 Second, run the following script:
@@ -42,7 +42,7 @@ We train 20 epochs in our experiments.
 ## 2. Fully-Supervised Training
 First, set the values in ```configs/train_supervision.yml``` as follows:
 1. Set the ```exper.output_dir``` to your output path. We use ```$output_fully_supervision_model_path$``` to represent the output path of our fully supervision model;
-2. Set the ```data.smplx_path``` to your model path;
+2. Set the ```data.smplx_path``` to your MANO model path;
 3. Set the ```data.data_dir``` to ```$data$```.
 
 Second, run the following script:
@@ -56,7 +56,7 @@ We train 40 epochs in our experiments.
 ## 3. Semi-Supervised Training
 First, set the values in ```configs/train_semi.yml``` as follows:
 1. Set the ```exper.output_dir``` to your output path. We use ```$output_semi_supervision_model_path$``` to represent the output path of our semi supervision model;
-2. Set the ```data.smplx_path``` to your model path;
+2. Set the ```data.smplx_path``` to your MANO model path;
 3. Set the ```data.data_dir``` to ```$data$```.
 
 Second, run the following script:
