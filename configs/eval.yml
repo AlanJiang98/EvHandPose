@@ -2,7 +2,7 @@
 exper:
   mode: 'eval'
   debug: False
-  data_dir: '/home/user/disk_16T/dataset/EvRealHands_event/data'
+  data_dir: '/home/user/disk_16T/dataset/EvRealHands_event'
 
 preprocess:
   batch_size: 1

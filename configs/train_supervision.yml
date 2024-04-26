@@ -16,7 +16,6 @@ data:
   dataset: EvHand # Interhand, EvHand
   data_dir: '/home/user/disk_16T/dataset/EvRealHands_event' # directory to dataset
   train_subject: [0, 2, 4, 5, 6, 7, 8, 9]  # subject ids for training
-
   val_subject: []  # subject ids for validation
   eval_subject: [1, 3]  # subject ids for testing
   fps: 15 # data fps
