@@ -10,7 +10,7 @@ conda activate EvHand_public
 
 # 2. Dataset Preparation
 ## 1. EvRealHands Dataset
-Our real-world dataset is from [EvRealHands](https://github.com/marian42/mesh_to_sdf).
+Our real-world dataset is from [EvRealHands](https://www.dropbox.com/scl/fi/x3bmfw2tfmqaghagb6alx/EvRealHands.zip?rlkey=gvukp6yv86ypmio7dnce20w2y&st=mg1z06o7&dl=0).
 Please download our dataset to your disk. We use ```$data$``` to represent the absolute path to our dataset.
 
 ## 2. MANO
