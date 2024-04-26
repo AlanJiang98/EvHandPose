@@ -125,7 +125,7 @@ if __name__ == '__main__':
         scene = datasets[j].scene
         gesture = datasets[j].gesture_type
         hand_type = datasets[j].hand_type
-        camera_annot = json_read(os.path.join(datasets[j].config['data']['data_dir'], 'data', seq_id, 'annot.json'))["camera_info"]
+        camera_annot = json_read(os.path.join(datasets[j].config['data']['data_dir'], seq_id, 'annot.json'))["camera_info"]
         K = torch.tensor(camera_annot['event']['K'], dtype=torch.float32, device=device)
         mpjpe_seq_error_list = []
         pampjpe_seq_error_list = []
