@@ -1,9 +1,9 @@
 # EvHandPose [TPAMI'24] ✨✨
 - This is the official code of "EvHandPose: Event-based 3D Hand Pose Estimation with Sparse Supervision".
-- [[Project Page](https://alanjiang98.github.io/evhandpose.github.io/)]  [[Data](https://www.dropbox.com/scl/fi/x3bmfw2tfmqaghagb6alx/EvRealHands.zip)] [[Paper](https://ieeexplore.ieee.org/document/10478195)] 
+- [[Project Page:page_with_curl:](https://alanjiang98.github.io/evhandpose.github.io/)]  [[Data](https://www.dropbox.com/scl/fi/x3bmfw2tfmqaghagb6alx/EvRealHands.zip)] [[Paper](https://ieeexplore.ieee.org/document/10478195)] 
 [[Arxiv](https://arxiv.org/abs/2303.02862)]
-[[Models](https://www.dropbox.com/scl/fi/bfeac5l6htbnpue473xdk/model.ckpt)]
-[[Video :clapper:]](https://www.youtube.com/watch?v=MMaYhK2czIg)
+[[Model](https://www.dropbox.com/scl/fi/bfeac5l6htbnpue473xdk/model.ckpt)]
+[[Video:clapper:]](https://www.youtube.com/watch?v=MMaYhK2czIg)
 
 
 ## 1. Installation
