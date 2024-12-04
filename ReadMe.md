@@ -93,8 +93,8 @@ in  ```configs/eval.yml```.
 
     - The output results will be saved in ```$output_semi_supervision_model_path$/test```.
 
-- If you want to directly implement Inference without training, we also provide [pretrained flow model and final semi-supervision model](https://www.dropbox.com/scl/fi/bfeac5l6htbnpue473xdk/model.ckpt?rlkey=zfqfjdjyvqvqbrlustv23of0l&e=1&st=zk1d9oc1&dl=0)
-in this link. To directly implement Inference, you need to set ```method.flow.model_path=$Your_Pretrained_Flow_Model_Path$``` in ```configs/pretrain.yml```. You also need to set ```data.data_dir```, ```data.smplx_path```, ```exper.output_dir``` to your own setting. Then, run the following script:
+- If you want to directly implement Inference without training, we also provide [pretrained model](https://www.dropbox.com/scl/fi/bfeac5l6htbnpue473xdk/model.ckpt?rlkey=zfqfjdjyvqvqbrlustv23of0l&e=1&st=zk1d9oc1&dl=0)
+in this link. To directly implement Inference, you need to set ```data.data_dir```, ```data.smplx_path```, ```exper.output_dir``` in ```configs/pretrain.yml``` to your own setting. Then, run the following script:
     ```
     cd ./scripts
     python eval.py --config_train ../configs/pretrain.yml --config_test ../configs/eval.yml
