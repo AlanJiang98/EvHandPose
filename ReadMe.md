@@ -93,8 +93,14 @@ in  ```configs/eval.yml```.
 
     - The output results will be saved in ```$output_semi_supervision_model_path$/test```.
 
-- We provide [pretrained model](https://www.dropbox.com/scl/fi/bfeac5l6htbnpue473xdk/model.ckpt?rlkey=zfqfjdjyvqvqbrlustv23of0l&e=1&st=zk1d9oc1&dl=0)
-in this link. Download it and set it to ```model_path``` to directly view the results.
+- If you want to directly implement Inference without training, we also provide [pretrained flow model and final semi-supervision model](https://www.dropbox.com/scl/fi/bfeac5l6htbnpue473xdk/model.ckpt?rlkey=zfqfjdjyvqvqbrlustv23of0l&e=1&st=zk1d9oc1&dl=0)
+in this link. To directly implement Inference, you need to set ```method.flow.model_path=$Your_Pretrained_Flow_Model_Path$``` in ```configs/pretrain.yml```. Then, run the following script:
+    ```
+    cd ./scripts
+    python eval.py --config_train ../configs/pretrain.yml --config_test ../configs/eval.yml
+    --gpu 1 --model_path $Your_Pretrained_Model_Path$ 
+    ```
+ Then you can directly view the results.
 
 ## 5. Citation
 ```bibtex
